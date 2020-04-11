@@ -11,10 +11,10 @@ class MineStore {
     this.makeNewMineMap();
   }
   @observable
-  isStart: any = false;
+  isStart: boolean = false;
 
   @observable
-  playTime: any = 0;
+  playTime: number = 0;
 
   @observable
   intervalId: any = null;
