@@ -3,6 +3,9 @@ import makeStore from "../utils/makeStore";
 import CellModel from "../models/CellModel";
 import 코드표, { 지뢰개수, 크기 } from "../codes/code";
 
+function checkNumberBetween(n: number, min: number, max: number) {
+  return n >= min && n <= max;
+}
 class MineStore {
   constructor() {
     this.makeNewMineMap();
@@ -40,24 +43,29 @@ class MineStore {
   @observable
   isFail = false;
 
+  @action
+  setIsFail = () => (this.isFail = true);
+
   @computed
   get isGameEnd() {
     return this.isFail || this.isSuccess;
   }
 
-  @action
-  setIsFail = () => (this.isFail = true);
-
   //빈셀 클릭시 주변 셀 열어주기
   @action
   주변셀확인 = (위치들: Set<string>) => {
     위치들.forEach((value: any) => {
-      const cell = this.mineMap[value[0]]
-        ? this.mineMap[value[0]][value[1]]
-        : false;
+      if (
+        checkNumberBetween(value[0], 0, 7) &&
+        checkNumberBetween(value[1], 0, 7)
+      ) {
+        const cell = this.mineMap[value[0]]
+          ? this.mineMap[value[0]][value[1]]
+          : false;
 
-      if (cell && !cell.isMine) {
-        cell.setStatus(코드표.연칸);
+        if (cell && !cell.isMine && cell.status === 코드표.보통칸) {
+          cell.setStatus(코드표.연칸);
+        }
       }
     });
   };

@@ -1,9 +1,9 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { useMineStore } from "../stores/MineStore";
+import { useMineStore } from "../../stores/MineStore";
 import Cell from "./Cell";
-import CellModel from "../models/CellModel";
-import Rank from "./Rank";
+import CellModel from "../../models/CellModel";
+import Rank from "../Rank/Rank";
 
 const MineMap: React.FC = () => {
   const {

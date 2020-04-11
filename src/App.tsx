@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { MineStoreProvider } from "./stores/MineStore";
-import MineMap from "./components/MineMap";
+import MineMap from "./components/Mine/MineMap";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
           <h1>지뢰찾기</h1>
         </header>
         <section>
-          <MineMap></MineMap>
+          <MineMap />
         </section>
       </div>
     </MineStoreProvider>

@@ -2,6 +2,7 @@ import { observable, computed, action } from "mobx";
 
 export default class CellModel {
   constructor(i: number, j: number, 지뢰들: Set<string>) {
+    //model에서 직접 store 에 접근하는 것은 지양한다.
     this.위치 = `${i}${j}`;
     this.지뢰들 = 지뢰들;
 

@@ -1,2 +1,2 @@
-export { default as Cell } from "./Cell";
-export { default as MineMap } from "./MineMap";
+export { default as Cell } from "./Mine/Cell";
+export { default as MineMap } from "./Mine/MineMap";
