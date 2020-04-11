@@ -1,44 +1,62 @@
-import React, { useState, useEffect } from "react";
-import { useMineStore, 지뢰개수 } from "../stores/MineStore";
+import React from "react";
 import { useObserver, observer } from "mobx-react";
+import { useMineStore } from "../stores/MineStore";
+import CellModel from "../models/CellModel";
+import 코드표, { 지뢰개수 } from "../codes/code";
 
 interface PropsType {
-  위치: string;
+  info: CellModel;
 }
 
-const Cell: React.FC<PropsType> = ({ 위치 }) => {
-  const [count, setCount] = useState(0);
-  const [isSafe, setIsSafe] = useState(false);
+const Cell: React.FC<PropsType> = ({ info }) => {
   const store = useMineStore();
-  const 지뢰니 = store.지뢰들.has(위치);
-
-  useEffect(() => {
-    const 주변 = new Set();
-    for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        주변.add(`${(위치[0] as any) * 1 + i}${(위치[1] as any) * 1 + j}`);
-      }
-    }
-    setCount(store.지뢰들.size + 9 - new Set([...주변, ...store.지뢰들]).size);
-  }, [위치, store.지뢰들]);
 
   const checkIsMine = () => {
-    if (!store.isOver) {
-      지뢰니 ? store.setIsOvesr() : setIsSafe(true);
+    if (!store.isGameEnd && info.isMine) {
+      store.setIsFail();
+    } else if (!store.isGameEnd) {
+      info.setStatus(코드표.연칸);
+      info.count === 0 && store.주변셀확인(info.주변);
+    }
+  };
+
+  const setFlag = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    if (!store.isFail) {
+      if (info.status === 코드표.깃발 && store.남은지뢰수 > 지뢰개수) {
+        store.plus남은지뢰();
+        info.setStatus(코드표.보통칸);
+      } else if (store.남은지뢰수 > 0) {
+        store.minus남은지뢰();
+        info.setStatus(코드표.깃발);
+      }
     }
   };
 
   return useObserver(() => (
     <div
-      data-testid={위치}
+      data-testid={info.위치}
       className="cell"
-      style={{ background: 지뢰니 && store.isOver ? "red" : "white" }}
+      style={{
+        background:
+          info.isMine && store.isFail
+            ? "red"
+            : info.status === 코드표.연칸
+            ? "blue"
+            : "white",
+      }}
       onClick={checkIsMine}
+      onContextMenu={setFlag}
     >
       <p>
-        <span>{isSafe && count}</span>
+        <span>{info.isMine && store.isFail && "지뢰"}</span>
       </p>
-      <span>{String(지뢰니)}</span>
+      <p>
+        <span>{info.status === 코드표.연칸 && info.count}</span>
+      </p>
+      <p>
+        <span>{info.status === 코드표.깃발 && "깃발"}</span>
+      </p>
     </div>
   ));
 };

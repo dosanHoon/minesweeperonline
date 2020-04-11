@@ -38,15 +38,25 @@ html {
 .row {
   display: flex;
   flex: 1;
-  /* flex-direction: row; */
 }
 
 .cell {
-  /* display: flex; */
-  /* flex-direction: column; */
+  background: white;
+  border: 1px solid;
+  box-shadow: inset black 1px 1px 1px 1px;
   flex: 1;
-
   border: 1px solid white;
+}
+
+button {
+  width: 150px;
+  height: 70px;
+  margin: 30px;
+  font-size: 20px;
+}
+
+h2 {
+  color: white;
 }
 
 @keyframes App-logo-spin {
