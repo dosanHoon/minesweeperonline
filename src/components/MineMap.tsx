@@ -6,12 +6,19 @@ import CellModel from "../models/CellModel";
 import Rank from "./Rank";
 
 const MineMap: React.FC = () => {
-  const { isSuccess, mineMap, makeNewMineMap, 남은지뢰수 } = useMineStore();
+  const {
+    isSuccess,
+    mineMap,
+    makeNewMineMap,
+    남은지뢰수,
+    playTime,
+  } = useMineStore();
   return (
     <>
       <div className="mineMap">
         <h2>{isSuccess && "성공입니다."}</h2>
-        <h2 data-testid={"남은지뢰수"}>{남은지뢰수}</h2>
+        <h2>"경과시간" : {playTime}</h2>
+        <h2 data-testid={"남은지뢰수"}>"남은지뢰수" : {남은지뢰수}</h2>
         <div>
           {mineMap.map((row: [], r: number) => (
             <div className="row" key={r}>
@@ -21,9 +28,9 @@ const MineMap: React.FC = () => {
             </div>
           ))}
         </div>
+        <button onClick={makeNewMineMap}>다시하기</button>
       </div>
       <Rank />
-      <button onClick={makeNewMineMap}>다시하기</button>
     </>
   );
 };

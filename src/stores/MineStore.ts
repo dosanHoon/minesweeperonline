@@ -8,6 +8,27 @@ class MineStore {
     this.makeNewMineMap();
   }
   @observable
+  isStart: any = false;
+
+  @observable
+  playTime: any = 0;
+
+  @observable
+  intervalId: any = null;
+
+  @action
+  setStartTime = () => {
+    if (!this.isStart) {
+      this.isStart = true;
+      this.playTime = 0;
+      this.intervalId = setInterval(() => {
+        this.isGameEnd && clearInterval(this.intervalId);
+        !this.isGameEnd && ++this.playTime;
+      }, 1000);
+    }
+  };
+
+  @observable
   남은지뢰수 = 지뢰개수;
 
   @action
@@ -57,6 +78,9 @@ class MineStore {
     this.isFail = false;
     this.지뢰들 = new Set();
     this.남은지뢰수 = 지뢰개수;
+    this.isStart = false;
+    this.playTime = 0;
+    clearInterval(this.intervalId);
   };
 
   @observable
@@ -65,6 +89,7 @@ class MineStore {
   @observable
   지뢰들: Set<string> = new Set();
 
+  //랜덤으로 지뢰 만들기
   @action
   addNewMine = () => {
     while (this.지뢰들.size < 지뢰개수) {
@@ -74,6 +99,7 @@ class MineStore {
     }
   };
 
+  //새로운 셀 인스턴스 생성
   @action
   newMap = () => {
     const newMap = [];
